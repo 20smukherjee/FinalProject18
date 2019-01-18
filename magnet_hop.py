@@ -3,30 +3,24 @@ import random
 
 interface_x = 400
 interface_y = 450
-
+#Initializes screen
 init()
 window = display.set_mode((interface_x, interface_y))
 display.set_caption('Magnet Hop')
 clock = time.Clock()
 
-def message(msg,x,y):
+#Intro Message
+def imessage(msg,x,y):    
     f = font.Font(None, 20)
     text= f.render(msg,True,[0, 0, 0])
     window.blit(text,[x,y])
-    display.update()
-    time.delay(1000)
-    f = font.Font(None, 20)
-    text= f.render(msg,True,[100, 100, 100])
-    window.blit(text,[x,y])
-
+#This is the main fucntion
 class Magnet_Man:
+
     def __init__(self):       
         self.exist = image.load('RBF.png')
         self.reset()   
-    def drawGrid(self):
-        for x in range(80):
-            draw.line(self.screen, (222,222,222), (x * 12, 0), (x * 12, 600))
-            draw.line(self.screen, (222,222,222), (0, x * 12), (800, x * 12)) 
+
     def reset(self): #Sets initial conditions
         self.velocity_x = 0
         self.velocity_y = 0
@@ -43,10 +37,9 @@ class Magnet_Man:
         self.y = interface_y - self.height
 
 
-    def update(self,p):
+    def update(self,p): #moves the image graphically
         self.side_control()
         self.physics(p)
-        #self.drawGrid()
         self.move()
         self.show()
         self.x += self.velocity_x
@@ -68,10 +61,9 @@ class Magnet_Man:
 
                     if self.velocity_y < 0:
                         on = True
-
-        if not on and not self.y >= interface_y - self.height:
+        if not on and not self.y >= interface_y - self.height: #makes it fall
             self.velocity_y -= 0.5
-        elif on:
+        elif on: #platform autojump
             self.velocity_y = self.jump_velocity
         else:
             self.y = interface_y - self.height
@@ -83,12 +75,12 @@ class Magnet_Man:
                 else:
                     self.x = min((interface_x - self.width) / 2, self.x + 6)
             
-            else:
+            else: #start of game/jump function
                 keys = key.get_pressed()
                 if keys[K_SPACE]:
                     self.velocity_y = self.jump_velocity
                     
-    def side_control(self):
+    def side_control(self): #classic doodle jump side teleporting magic
         if self.x + self.width < 0:
             self.x = interface_x - self.scale
         if self.x > interface_x:
@@ -116,31 +108,31 @@ class Magnet_Man:
 
 platform_spacing = 60
 
-class Platform_Manager:
+class Platform_Tracker:
     def __init__(self):
         self.platforms = []
-        self.spawns = 0
-        self.start_spawn = interface_y+10
+        self.generates = 0
+        self.start_generate = interface_y+10
 
         scale = 2.5
         self.width, self.height = 24 * scale, 6 * scale
 
     def update(self):
-        self.spawner()
+        self.generator()
         return self.manage()
 
         
         
-    def spawner(self):
-        if interface_y - info['screen_y'] > self.spawns * platform_spacing:
-            self.spawn()
+    def generator(self):
+        if interface_y - info['screen_y'] > self.generates * platform_spacing:
+            self.generate()
         
-    def spawn(self):
-        y = self.start_spawn - self.spawns * platform_spacing
+    def generate(self):
+        y = self.start_generate - self.generates * platform_spacing
         x = random.randint(-self.width, interface_x)
         
         self.platforms.append(Platform(x,y))
-        self.spawns += 1
+        self.generates += 1
         
     def manage(self):
         u = []
@@ -182,6 +174,8 @@ def event_loop():
         if loop.type == KEYDOWN:
             if loop.key == K_ESCAPE:
                 quit()
+            if loop.key == K_SPACE:
+                intro = False
         if loop.type == QUIT:
             quit()
 
@@ -204,14 +198,15 @@ info = {
     'score': 0,
     'high_score': 0
     }
-Magnet_man, platform_manager = Magnet_Man(), Platform_Manager()
+Magnet_man, platform_tracker = Magnet_Man(), Platform_Tracker()
+
+i = 0
+intro = True
 while True:
     #MAIN LOOP
 
     event_loop()
-    #drawGrid()
-    message("Welcome to Magnet Hop. Press space to begin.", interface_x/2-100,interface_y-200)
-    platform_blit = platform_manager.update()
+    platform_blit = platform_tracker.update()
     Magnet_blit = Magnet_man.update(platform_blit)
     info['screen_y'] = min(min(0,Magnet_blit[1][1] - interface_y*0.4),info['screen_y'])
     info['score'] = (-Magnet_blit[1][1] + 400)/50
@@ -220,13 +215,12 @@ while True:
         info['score'] = 0
         info['screen_y'] = 0
         Magnet_man = Magnet_Man()
-        platform_manager = Platform_Manager()
+        platform_tracker = Platform_Tracker()
 
     clock.tick(60)
 
     #DISPLAY FILL and GRAPHICS
     window.fill((255,255,255))
-
     blit_images([Magnet_blit])
     
     for x in platform_blit:
@@ -239,5 +233,8 @@ while True:
 
     show_score(info['score'],1)
     show_score(info['high_score'],0)
-
-    display.update()
+    if intro == True:
+        imessage("Welcome to Magnet Hop", interface_x/2-100,interface_y-200)
+        time.delay(2000)
+        intro = False
+    display.flip()
