@@ -10,19 +10,23 @@ display.set_caption('Magnet Hop')
 clock = time.Clock()
 
 def message(msg,x,y):
-    screen_text=font.render(msg,True,black)
-    gameDisplay.blit(screen_text,[x,y])
-    pygame.display.update()
+    f = font.Font(None, 20)
+    text= f.render(msg,True,[0, 0, 0])
+    window.blit(text,[x,y])
+    display.update()
+    time.delay(1000)
+    f = font.Font(None, 20)
+    text= f.render(msg,True,[100, 100, 100])
+    window.blit(text,[x,y])
 
 class Magnet_Man:
     def __init__(self):       
         self.exist = image.load('RBF.png')
-        self.reset()
+        self.reset()   
     def drawGrid(self):
         for x in range(80):
-            pygame.draw.line(self.screen, (222,222,222), (x * 12, 0), (x * 12, 600))
-            pygame.draw.line(self.screen, (222,222,222), (0, x * 12), (800, x * 12))    
-
+            draw.line(self.screen, (222,222,222), (x * 12, 0), (x * 12, 600))
+            draw.line(self.screen, (222,222,222), (0, x * 12), (800, x * 12)) 
     def reset(self): #Sets initial conditions
         self.velocity_x = 0
         self.velocity_y = 0
@@ -42,6 +46,7 @@ class Magnet_Man:
     def update(self,p):
         self.side_control()
         self.physics(p)
+        #self.drawGrid()
         self.move()
         self.show()
         self.x += self.velocity_x
@@ -136,7 +141,6 @@ class Platform_Manager:
         
         self.platforms.append(Platform(x,y))
         self.spawns += 1
-
         
     def manage(self):
         u = []
@@ -149,14 +153,12 @@ class Platform_Manager:
             
         self.platforms = u
         return b
-    
-
 
 class Platform:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        self.color = (random.randint(0,300), random.randint(0,300), random.randint(0,300))
         scale = 3
         self.width, self.height = 24 * scale, 6 * scale
 
@@ -166,7 +168,7 @@ class Platform:
         return True
 
     def show(self):
-        return ((0,0,0), (self.x, self.y, self.width, self.height)))
+        return ((0,0,0), (self.x, self.y, self.width, self.height))
 
 def random_colour(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
@@ -202,17 +204,13 @@ info = {
     'score': 0,
     'high_score': 0
     }
-
-
-Magnet_man = Magnet_Man()
-platform_manager = Platform_Manager()
-
+Magnet_man, platform_manager = Magnet_Man(), Platform_Manager()
 while True:
     #MAIN LOOP
 
     event_loop()
-    drawGrid()
-    message("Welcome to Magnet Hop. Press space to begin.", interface_x/2-100,interface_y-50)
+    #drawGrid()
+    message("Welcome to Magnet Hop. Press space to begin.", interface_x/2-100,interface_y-200)
     platform_blit = platform_manager.update()
     Magnet_blit = Magnet_man.update(platform_blit)
     info['screen_y'] = min(min(0,Magnet_blit[1][1] - interface_y*0.4),info['screen_y'])
@@ -226,7 +224,7 @@ while True:
 
     clock.tick(60)
 
-    #DISPLAY THINGS
+    #DISPLAY FILL and GRAPHICS
     window.fill((255,255,255))
 
     blit_images([Magnet_blit])
