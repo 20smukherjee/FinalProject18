@@ -9,6 +9,10 @@ window = display.set_mode((interface_x, interface_y))
 display.set_caption('Magnet Hop')
 clock = time.Clock()
 
+def message(msg,x,y):
+    screen_text=font.render(msg,True,black)
+    gameDisplay.blit(screen_text,[x,y])
+    pygame.display.update()
 
 class Magnet_Man:
     def __init__(self):       
@@ -208,6 +212,7 @@ while True:
 
     event_loop()
     drawGrid()
+    message("Welcome to Magnet Hop. Press space to begin.", interface_x/2-100,interface_y-50)
     platform_blit = platform_manager.update()
     Magnet_blit = Magnet_man.update(platform_blit)
     info['screen_y'] = min(min(0,Magnet_blit[1][1] - interface_y*0.4),info['screen_y'])
