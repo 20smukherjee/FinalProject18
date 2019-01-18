@@ -17,8 +17,10 @@ def imessage(msg,x,y):
 #This is the main fucntion
 class Magnet_Man:
 
-    def __init__(self):       
-        self.exist = image.load('RBF.png')
+    def __init__(self):
+        WHITE = (255, 255, 255)       
+        self.exist = image.load('RBF.png').convert()
+        self.exist.set_colorkey(WHITE)
         self.reset()   
 
     def reset(self): #Sets initial conditions
@@ -107,7 +109,6 @@ class Magnet_Man:
 
 
 platform_spacing = 60
-
 class Platform_Tracker:
     def __init__(self):
         self.platforms = []
@@ -199,7 +200,7 @@ info = {
     'high_score': 0
     }
 Magnet_man, platform_tracker = Magnet_Man(), Platform_Tracker()
-
+backgroundimg=image.load("background.png").convert()
 i = 0
 intro = True
 while True:
@@ -221,7 +222,6 @@ while True:
 
     #DISPLAY FILL and GRAPHICS
     window.fill((255,255,255))
-    backgroundimg=image.load("background.png")
     window.blit(backgroundimg,[0,0])
     blit_images([Magnet_blit])
     for x in platform_blit:
