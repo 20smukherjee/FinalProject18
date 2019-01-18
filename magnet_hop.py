@@ -14,7 +14,10 @@ class Magnet_Man:
     def __init__(self):       
         self.exist = image.load('RBF.png')
         self.reset()
-        
+    def drawGrid(self):
+        for x in range(80):
+            pygame.draw.line(self.screen, (222,222,222), (x * 12, 0), (x * 12, 600))
+            pygame.draw.line(self.screen, (222,222,222), (0, x * 12), (800, x * 12))    
 
     def reset(self): #Sets initial conditions
         self.velocity_x = 0
@@ -159,7 +162,7 @@ class Platform:
         return True
 
     def show(self):
-        return ((0,0,0), image.load("Black_hole.png")*scale)
+        return ((0,0,0), (self.x, self.y, self.width, self.height)))
 
 def random_colour(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
@@ -201,10 +204,10 @@ Magnet_man = Magnet_Man()
 platform_manager = Platform_Manager()
 
 while True:
-    #MATH THINGS
+    #MAIN LOOP
 
     event_loop()
-
+    drawGrid()
     platform_blit = platform_manager.update()
     Magnet_blit = Magnet_man.update(platform_blit)
     info['screen_y'] = min(min(0,Magnet_blit[1][1] - interface_y*0.4),info['screen_y'])
