@@ -221,8 +221,9 @@ while True:
 
     #DISPLAY FILL and GRAPHICS
     window.fill((255,255,255))
+    backgroundimg=image.load("background.png")
+    window.blit(backgroundimg,[0,0])
     blit_images([Magnet_blit])
-    
     for x in platform_blit:
         i = list(x)
         i[1] = list(i[1])
@@ -235,6 +236,5 @@ while True:
     show_score(info['high_score'],0)
     if intro == True:
         imessage("Welcome to Magnet Hop", interface_x/2-100,interface_y-200)
-        time.delay(2000)
         intro = False
     display.flip()
