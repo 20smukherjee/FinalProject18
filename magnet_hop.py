@@ -10,7 +10,7 @@ display.set_caption('Magnet Hop')
 clock = time.Clock()
 
 def imessage(msg,x,y): 
-'''Sends message to user at the beginning to tell them how the game works
+    '''Sends message to user at the beginning to tell them how the game works
 '''
     f = font.Font(None, 20)
     text= f.render(msg,True,[0, 0, 0])
@@ -20,12 +20,12 @@ class Magnet_Man:
 
     def __init__(self):
         WHITE = (255, 255, 255)       
-        self.exist = image.load('RBF.png').convert()
+        self.exist = image.load('RBF.png')
         self.exist.set_colorkey(WHITE)
         self.reset()   
 
     def reset(self):
- '''Set initial/respawn conditions'''
+        '''Set initial/respawn conditions'''
         self.velocity_x = 0
         self.velocity_y = 0
         self.max_velocity_x = 5
@@ -53,7 +53,7 @@ class Magnet_Man:
         return (self.img, (self.x, self.y, self.width, self.height))
 
     def physics(self, p):
- '''Defines the games physics and how it should interact with platform which is what on represent'''
+        '''Defines the games physics and how it should interact with platform which is what on represent'''
         on = False
         
         for color, rect in p:
@@ -113,7 +113,6 @@ class Magnet_Man:
 
             self.velocity_x = max(-self.max_velocity_x, min(self.max_velocity_x, self.velocity_x))
             self.velocity_y = max(-self.max_velocity_y, min(self.max_velocity_y, self.velocity_y))
-
 
 platformspacing = 60
 #Its really interesting to play with the varb to see how it affect the frequency of platforms and the difficulty of the game.
