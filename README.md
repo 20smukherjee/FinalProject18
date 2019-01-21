@@ -10,6 +10,7 @@ Game Info:
 In creating this game, our main goals were to recreate some of the most iconic features, like teleporting from one side to another by
 going beyond the game border. This proved initially challenging, however it was fairly easy when we realized that you could simply invert
 the x coordinate of the player when we saw that the x coordinate of the top left of the player was beyond the border. 
+
 Sources:
 
 https://www.youtube.com/watch?v=1aGuhUFwvXA
