@@ -250,7 +250,7 @@ while True:
 
     show_score(info['score'],1)
     show_score(info['high_score'],0)
-    if info['score']<10:
+    if info['score']<5:
         imessage("Welcome to Magnet Hop. Press Space to begin.", interface_x/2-100,interface_y-200)
     else:
         imessage("", interface_x/2-100,interface_y-200)
