@@ -219,7 +219,6 @@ info = {
     }
 Magnet_man, platform_tracker = Magnet_Man(), Platform_Tracker()
 backgroundimg=image.load("background.png").convert()
-intro = True
 while True:
     #MAIN LOOP
 
@@ -251,7 +250,8 @@ while True:
 
     show_score(info['score'],1)
     show_score(info['high_score'],0)
-    if intro == True:
-        imessage("Welcome to Magnet Hop", interface_x/2-100,interface_y-200)
-        intro = False
+    if info['score']<10:
+        imessage("Welcome to Magnet Hop. Press Space to begin.", interface_x/2-100,interface_y-200)
+    else:
+        imessage("", interface_x/2-100,interface_y-200)
     display.flip()
