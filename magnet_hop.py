@@ -113,7 +113,6 @@ class Magnet_Man:
 
             self.velocity_x = max(-self.max_velocity_x, min(self.max_velocity_x, self.velocity_x))
             self.velocity_y = max(-self.max_velocity_y, min(self.max_velocity_y, self.velocity_y))
-
 platformspacing = 50
 #Its really interesting to play with the varb to see how it affect the frequency of platforms and the difficulty of the game.
 class Platform_Tracker:
@@ -220,7 +219,10 @@ backgroundimg=image.load("background.png").convert()
 intro=0
 while True:
     #MAIN LOOP
-
+    if info['score']<100:#Makes the game harder
+        platformspacing = 50
+    else:
+        platformspacing = 53
     event_loop()
     platform_blit = platform_tracker.update()
     Magnet_blit = Magnet_man.update(platform_blit)
@@ -250,7 +252,9 @@ while True:
     show_score(info['score'],1)
     show_score(info['high_score'],0)
     if info['score']<5:
-        imessage("Welcome to Magnet Hop. Press Space or w to begin.", interface_x/2-125,interface_y-200)
+        imessage("Welcome to Magnet Hop. Press Space or w to begin.", interface_x/2-150,interface_y-200)
     else:
         pass
+    if info['score'] == 100 and info['score']<105:
+         imessage("Congrats, you hit a score of 100!", interface_x/2-150,interface_y-200)
     display.flip()
