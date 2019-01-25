@@ -10,18 +10,15 @@ display.set_caption('Magnet Hop')
 clock = time.Clock()
 
 def imessage(msg,x,y): 
-    '''Sends message to user at the beginning to tell them how the game works
-'''
+    '''Sends message to user at the beginning to tell them how the game works'''
     f = font.Font(None, 20)
     text= f.render(msg,True,[0, 0, 0])
     window.blit(text,[x,y])
 #This is the main
 class Magnet_Man:
 
-    def __init__(self):
-        WHITE = (255, 255, 255)       
+    def __init__(self):   
         self.exist = image.load('RBF.png')
-        self.exist.set_colorkey(WHITE)
         self.reset()   
 
     def reset(self):
@@ -113,7 +110,7 @@ class Magnet_Man:
 
             self.velocity_x = max(-self.max_velocity_x, min(self.max_velocity_x, self.velocity_x))
             self.velocity_y = max(-self.max_velocity_y, min(self.max_velocity_y, self.velocity_y))
-platformspacing = 50
+platformspacing = 45
 #Its really interesting to play with the varb to see how it affect the frequency of platforms and the difficulty of the game.
 class Platform_Tracker:
     '''this sets the conditions for platform generation'''
@@ -162,7 +159,7 @@ class Platform_Tracker:
 class Platform:
     #This monster actually creates the platforms and was by far one of the hardest portions to callibrate
     def __init__(self,x,y):
-        '''mold platform'''
+        '''platform mold'''
         self.x = x
         self.y = y
         self.color = (random.randint(0,300), random.randint(0,300), random.randint(0,300))
@@ -181,7 +178,7 @@ def random_color(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
 
 def blit_images(x):
-    '''makes platform'''
+    '''custom blit fuction for platforms'''
     for i in x:
         window.blit(transform.scale(i[0], (i[1][2],i[1][3])), (i[1][0], i[1][1] - info['screen_y']))
 
@@ -219,10 +216,10 @@ backgroundimg=image.load("background.png").convert()
 intro=0
 while True:
     #MAIN LOOP
-    if info['score']<100:#Makes the game harder
+    if info['score']<25:#Makes the game harder
         platformspacing = 50
     else:
-        platformspacing = 53
+        platformspacing = 51
     event_loop()
     platform_blit = platform_tracker.update()
     Magnet_blit = Magnet_man.update(platform_blit)
@@ -255,6 +252,4 @@ while True:
         imessage("Welcome to Magnet Hop. Press Space or w to begin.", interface_x/2-150,interface_y-200)
     else:
         pass
-    if info['score'] == 100 and info['score']<105:
-         imessage("Congrats, you hit a score of 100!", interface_x/2-150,interface_y-200)
     display.flip()
