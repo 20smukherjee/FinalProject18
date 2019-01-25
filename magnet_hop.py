@@ -40,7 +40,7 @@ class Magnet_Man:
 
     def update(self,p): 
         '''moves the image graphically'''
-        self.side_control()
+        self.sidemagic()
         self.physics(p)
         self.move()
         self.show()
@@ -82,7 +82,7 @@ class Magnet_Man:
                 if keys[K_SPACE] or keys[K_w]:
                     self.velocity_y = self.jump_velocity
                     
-    def side_control(self): 
+    def sidemagic(self): 
         '''classic doodle jump side teleporting magic'''
         if self.x + self.width < 0:
             self.x = interface_x - self.scale
