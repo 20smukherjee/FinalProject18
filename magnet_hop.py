@@ -15,7 +15,7 @@ def imessage(msg,x,y):
     f = font.Font(None, 20)
     text= f.render(msg,True,[0, 0, 0])
     window.blit(text,[x,y])
-#This is the main fucntion
+#This is the main
 class Magnet_Man:
 
     def __init__(self):
@@ -28,7 +28,7 @@ class Magnet_Man:
         '''Set initial/respawn conditions'''
         self.velocity_x = 0
         self.velocity_y = 0
-        self.max_velocity_x = 5
+        self.max_velocity_x = 4
         self.max_velocity_y = 13
         self.x_acceleration = 0.5
         self.jump_velocity = 13
@@ -82,7 +82,7 @@ class Magnet_Man:
             
             else: #start of game/jump function
                 keys = key.get_pressed()
-                if keys[K_SPACE]:
+                if keys[K_SPACE] or keys[K_w]:
                     self.velocity_y = self.jump_velocity
                     
     def side_control(self): 
@@ -106,15 +106,15 @@ class Magnet_Man:
         keys = key.get_pressed()
         if not self.y >= interface_y - self.height:
 
-            if keys[K_LEFT] and keys[K_RIGHT]: self.slowdown()
-            elif keys[K_LEFT]: self.velocity_x -= self.x_acceleration
-            elif keys[K_RIGHT]: self.velocity_x += self.x_acceleration
+            if keys[K_LEFT] and keys[K_RIGHT] or keys[K_a] and keys[K_d]: self.slowdown()
+            elif keys[K_LEFT] or keys[K_a]: self.velocity_x -= self.x_acceleration
+            elif keys[K_RIGHT] or keys[K_d]: self.velocity_x += self.x_acceleration
             else: self.slowdown()
 
             self.velocity_x = max(-self.max_velocity_x, min(self.max_velocity_x, self.velocity_x))
             self.velocity_y = max(-self.max_velocity_y, min(self.max_velocity_y, self.velocity_y))
 
-platformspacing = 60
+platformspacing = 50
 #Its really interesting to play with the varb to see how it affect the frequency of platforms and the difficulty of the game.
 class Platform_Tracker:
     '''this sets the conditions for platform generation'''
@@ -182,7 +182,7 @@ def random_color(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
 
 def blit_images(x):
-    '''makes platform showing smooth'''
+    '''makes platform'''
     for i in x:
         window.blit(transform.scale(i[0], (i[1][2],i[1][3])), (i[1][0], i[1][1] - info['screen_y']))
 
@@ -192,8 +192,6 @@ def event_loop():
         if loop.type == KEYDOWN:
             if loop.key == K_ESCAPE:
                 quit()
-            if loop.key == K_SPACE:
-                intro = False
         if loop.type == QUIT:
             quit()
 
@@ -219,6 +217,7 @@ info = {
     }
 Magnet_man, platform_tracker = Magnet_Man(), Platform_Tracker()
 backgroundimg=image.load("background.png").convert()
+intro=0
 while True:
     #MAIN LOOP
 
@@ -251,7 +250,7 @@ while True:
     show_score(info['score'],1)
     show_score(info['high_score'],0)
     if info['score']<5:
-        imessage("Welcome to Magnet Hop. Press Space to begin.", interface_x/2-100,interface_y-200)
+        imessage("Welcome to Magnet Hop. Press Space or w to begin.", interface_x/2-125,interface_y-200)
     else:
-        imessage("", interface_x/2-100,interface_y-200)
+        pass
     display.flip()
